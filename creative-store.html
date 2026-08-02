@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Creative Store — Stickers que hacen hablar tu marca</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+  :root{
+    --blue:#2F5CFF;
+    --blue-deep:#1B3FCC;
+    --blue-mist:#EEF2FF;
+    --white:#FFFFFF;
+    --gray-light:#F5F6FA;
+    --gray-mid:#E3E6EF;
+    --gray-dark:#14161F;
+    --gray-soft:#6B7080;
+    --yellow:#FFC839;
+    --orange:#FF7A45;
+    --green:#28C76F;
+    --radius-sticker: 22px;
+    --shadow-sticker: 0 18px 40px -14px rgba(20,22,31,.22), 0 4px 10px -4px rgba(20,22,31,.10);
+    --shadow-soft: 0 10px 30px -12px rgba(20,22,31,.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    color:var(--gray-dark);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Poppins',sans-serif;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:3px solid var(--blue); outline-offset:3px; border-radius:8px;}
+
+  .wrap{max-width:1240px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){.wrap{padding:0 20px;}}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(255,255,255,.82);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--gray-mid);
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:16px 32px; max-width:1240px; margin:0 auto;}
+  .logo{display:flex; align-items:center; gap:10px; font-family:'Poppins'; font-weight:800; font-size:19px; letter-spacing:-.02em;}
+  .logo-mark{width:30px;height:30px;background:var(--blue);border-radius:9px; position:relative; transform:rotate(-8deg); box-shadow:var(--shadow-sticker);}
+  .logo-mark::after{content:"";position:absolute; width:9px;height:9px;background:var(--yellow); border-radius:3px; top:-4px; right:-4px; transform:rotate(18deg);}
+  .nav-links{display:flex; gap:34px; font-size:14.5px; font-weight:600; color:var(--gray-soft);}
+  .nav-links a:hover{color:var(--gray-dark);}
+  .nav-cta{display:flex; gap:10px; align-items:center;}
+  .btn{
+    border:none; border-radius:999px; padding:12px 22px; font-weight:700; font-size:14.5px;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+  }
+  .btn-primary{background:var(--blue); color:#fff; box-shadow:0 10px 24px -8px rgba(47,92,255,.55);}
+  .btn-primary:hover{transform:translateY(-3px) rotate(-1deg); box-shadow:0 16px 30px -8px rgba(47,92,255,.6);}
+  .btn-ghost{background:var(--white); color:var(--gray-dark); border:1.5px solid var(--gray-mid);}
+  .btn-ghost:hover{transform:translateY(-3px); border-color:var(--gray-dark);}
+  .btn-dark{background:var(--gray-dark); color:#fff;}
+  .btn-dark:hover{transform:translateY(-3px); box-shadow:0 14px 26px -10px rgba(20,22,31,.5);}
+  .icon-btn{width:38px;height:38px;border-radius:50%;background:var(--gray-light);border:none;display:grid;place-items:center;position:relative;}
+  .cart-count{position:absolute; top:-4px; right:-4px; width:17px;height:17px;background:var(--orange); color:#fff; font-size:10px; font-weight:800; border-radius:50%; display:grid; place-items:center;}
+  @media (max-width:900px){.nav-links{display:none;}}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    padding:80px 24px 60px;
+    overflow:hidden;
+    background:
+      radial-gradient(600px 300px at 15% 20%, var(--blue-mist), transparent 60%),
+      radial-gradient(500px 260px at 85% 75%, #FFF7E0, transparent 60%);
+  }
+  .eyebrow{
+    font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--blue); background:var(--blue-mist); padding:8px 16px; border-radius:999px;
+    margin-bottom:28px; display:inline-flex; align-items:center; gap:8px;
+  }
+  .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
+  .hero h1{
+    font-size:clamp(40px, 7.2vw, 92px);
+    line-height:.98; font-weight:800; letter-spacing:-.03em;
+    max-width:920px; margin:0 0 22px;
+  }
+  .hero h1 em{font-style:normal; color:var(--blue); position:relative;}
+  .hero p.sub{font-size:19px; color:var(--gray-soft); max-width:520px; margin:0 0 38px; font-weight:500;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; justify-content:center; z-index:5; position:relative;}
+  .hero-ctas .btn{padding:16px 30px; font-size:15.5px;}
+  .hero-note{margin-top:22px; font-size:13px; color:var(--gray-soft); font-weight:600;}
+
+  /* floating stickers */
+  .sticker-field{position:absolute; inset:0; z-index:1; pointer-events:none;}
+  .sticker{
+    position:absolute; pointer-events:auto;
+    border-radius:20px;
+    box-shadow:var(--shadow-sticker);
+    border:3px solid #fff;
+    display:grid; place-items:center;
+    font-weight:800; font-family:'Poppins'; color:#fff;
+    will-change:transform;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s;
+  }
+  .sticker:hover{transform:scale(1.08) rotate(0deg) !important; box-shadow:0 26px 50px -14px rgba(20,22,31,.32);}
+  .sticker::before{ /* peel corner */
+    content:""; position:absolute; top:-2px; right:-2px; width:22px; height:22px;
+    background:linear-gradient(135deg, rgba(255,255,255,0) 50%, rgba(255,255,255,.9) 51%);
+    border-radius:0 20px 0 8px; opacity:0; transition:opacity .3s;
+  }
+  .sticker:hover::before{opacity:1;}
+  .s1{width:96px;height:96px; top:12%; left:8%; background:var(--yellow); transform:rotate(-9deg); font-size:34px;}
+  .s2{width:70px;height:70px; top:22%; right:10%; background:var(--orange); transform:rotate(11deg); font-size:26px;}
+  .s3{width:120px;height:120px; bottom:10%; left:12%; background:var(--blue); transform:rotate(6deg); font-size:40px;}
+  .s4{width:58px;height:58px; top:60%; right:6%; background:var(--green); transform:rotate(-14deg); font-size:22px;}
+  .s5{width:80px;height:80px; bottom:16%; right:22%; background:var(--gray-dark); transform:rotate(4deg); font-size:28px;}
+  .s6{width:44px;height:44px; top:8%; left:38%; background:var(--white); transform:rotate(-6deg); font-size:20px; box-shadow:var(--shadow-soft);}
+  @media (max-width:760px){
+    .s1,.s2,.s3,.s4,.s5,.s6{transform:scale(.62) rotate(var(--r,0deg));}
+    .hero{min-height:80vh;}
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:100px 0;}
+  @media (max-width:640px){section{padding:64px 0;}}
+  .section-head{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:48px; flex-wrap:wrap;}
+  .section-head h2{font-size:clamp(28px,3.6vw,42px); font-weight:800; letter-spacing:-.02em; margin:0 0 8px;}
+  .section-head p{color:var(--gray-soft); font-size:16px; margin:0; max-width:460px;}
+  .kicker{font-size:12.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--blue); margin-bottom:10px; display:block;}
+
+  /* ---------- CATEGORIES ---------- */
+  .cat-scroll{display:flex; gap:14px; overflow-x:auto; padding:4px 0 12px; scrollbar-width:none;}
+  .cat-scroll::-webkit-scrollbar{display:none;}
+  .cat-chip{
+    flex:0 0 auto; display:flex; align-items:center; gap:10px;
+    background:var(--gray-light); border:1.5px solid transparent; border-radius:16px;
+    padding:14px 20px; font-weight:700; font-size:14.5px; white-space:nowrap;
+    transition:all .25s;
+  }
+  .cat-chip:hover{background:var(--white); border-color:var(--gray-mid); transform:translateY(-3px); box-shadow:var(--shadow-soft);}
+  .cat-chip .dot{width:10px;height:10px;border-radius:3px;}
+
+  /* ---------- PRODUCT GRID ---------- */
+  .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:28px;}
+  @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.grid{grid-template-columns:1fr;}}
+  .card{
+    position:relative; background:var(--white); border-radius:24px; padding:20px;
+    border:1px solid var(--gray-mid);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s, border-color .4s;
+  }
+  .card:hover{transform:translateY(-8px) rotate(-1.2deg); box-shadow:var(--shadow-sticker); border-color:transparent;}
+  .card-sticker{
+    aspect-ratio:1; border-radius:18px; margin-bottom:16px; position:relative; overflow:hidden;
+    display:grid; place-items:center; font-family:'Poppins'; font-weight:800; font-size:15px; color:#fff;
+    border:3px solid #fff; box-shadow:0 10px 22px -10px rgba(20,22,31,.28);
+  }
+  .card-sticker::after{
+    content:""; position:absolute; top:-3px; right:-3px; width:30px; height:30px;
+    background:linear-gradient(135deg, rgba(0,0,0,0) 50%, rgba(255,255,255,.85) 51%);
+    border-radius:0 16px 0 10px; opacity:0; transform:translate(6px,-6px); transition:all .35s;
+  }
+  .card:hover .card-sticker::after{opacity:1; transform:translate(0,0);}
+  .badge{position:absolute; top:14px; left:14px; background:#fff; color:var(--gray-dark); font-size:11px; font-weight:800; padding:5px 10px; border-radius:999px; box-shadow:var(--shadow-soft); z-index:2;}
+  .card h3{font-size:16px; margin:0 0 4px; font-weight:700;}
+  .card .price-row{display:flex; align-items:center; justify-content:space-between; margin-top:10px;}
+  .price{font-weight:800; font-size:17px;}
+  .price-old{font-size:13px; color:var(--gray-soft); text-decoration:line-through; margin-right:6px; font-weight:500;}
+  .add-btn{width:38px;height:38px;border-radius:50%; background:var(--gray-dark); color:#fff; border:none; font-size:18px; display:grid; place-items:center; transition:transform .25s, background .25s;}
+  .add-btn:hover{background:var(--blue); transform:scale(1.12) rotate(90deg);}
+  .see-all{margin-top:44px; text-align:center;}
+
+  /* ---------- CUSTOMIZE ---------- */
+  .customize{background:var(--gray-dark); color:#fff; border-radius:32px; margin:0 32px; overflow:hidden; position:relative;}
+  @media (max-width:640px){.customize{margin:0 16px; border-radius:24px;}}
+  .customize-inner{display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:40px; padding:70px;}
+  @media (max-width:900px){.customize-inner{grid-template-columns:1fr; padding:44px 28px;}}
+  .customize h2{color:#fff; font-size:clamp(26px,3.4vw,40px);}
+  .customize p{color:#B7BBCB; font-size:16px; line-height:1.6; max-width:440px;}
+  .finish-row{display:flex; gap:10px; margin:28px 0 32px; flex-wrap:wrap;}
+  .finish{padding:10px 16px; border-radius:12px; background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.14); font-size:13.5px; font-weight:700; color:#fff; transition:all .25s;}
+  .finish.active, .finish:hover{background:var(--blue); border-color:var(--blue);}
+  .mock-stage{
+    background:radial-gradient(circle at 30% 30%, #23263A, #14161F 70%);
+    border-radius:24px; aspect-ratio:1/1; position:relative; display:grid; place-items:center;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .mock-sticker{width:44%; aspect-ratio:1; border-radius:20px; background:var(--blue); border:4px solid #fff; box-shadow:0 30px 60px -20px rgba(0,0,0,.6); display:grid; place-items:center; font-family:'Poppins'; font-weight:800; color:#fff; font-size:15px;}
+
+  /* ---------- WHOLESALE CALCULATOR ---------- */
+  .wholesale{background:var(--blue-mist); border-radius:32px; margin:0 32px; padding:70px; display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:center;}
+  @media (max-width:900px){.wholesale{grid-template-columns:1fr; padding:44px 26px; margin:0 16px; border-radius:24px;}}
+  .qty-row{display:flex; gap:8px; flex-wrap:wrap; margin:22px 0 6px;}
+  .qty-chip{padding:10px 16px; border-radius:12px; background:#fff; border:1.5px solid var(--gray-mid); font-weight:700; font-size:13.5px; transition:all .2s;}
+  .qty-chip.active{background:var(--blue); color:#fff; border-color:var(--blue); box-shadow:0 10px 20px -8px rgba(47,92,255,.5);}
+  .result-card{background:#fff; border-radius:22px; padding:32px; box-shadow:var(--shadow-sticker);}
+  .result-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
+  .result-price{font-family:'Poppins'; font-weight:800; font-size:40px; letter-spacing:-.02em;}
+  .result-unit{color:var(--gray-soft); font-weight:600; font-size:14px;}
+  .save-tag{display:inline-flex; align-items:center; gap:6px; background:#E8FBF0; color:#159A54; font-weight:800; font-size:13px; padding:6px 12px; border-radius:999px; margin-top:10px;}
+  .result-bar{height:8px; background:var(--gray-mid); border-radius:99px; margin-top:22px; overflow:hidden;}
+  .result-bar-fill{height:100%; background:linear-gradient(90deg,var(--blue),var(--green)); border-radius:99px; transition:width .5s cubic-bezier(.2,.8,.2,1);}
+
+  /* ---------- SERVICES ---------- */
+  .services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.services-grid{grid-template-columns:1fr;}}
+  .service-card{border:1.5px solid var(--gray-mid); border-radius:20px; padding:26px; transition:all .3s;}
+  .service-card:hover{border-color:var(--gray-dark); transform:translateY(-4px);}
+  .service-icon{width:44px;height:44px;border-radius:12px; background:var(--gray-light); display:grid; place-items:center; margin-bottom:16px; font-size:20px;}
+  .service-card h4{margin:0 0 6px; font-size:16px; font-weight:700;}
+  .service-card p{margin:0; font-size:14px; color:var(--gray-soft); line-height:1.5;}
+
+  /* ---------- GALLERY MARQUEE ---------- */
+  .marquee{overflow:hidden; padding:20px 0;}
+  .marquee-track{display:flex; gap:20px; width:max-content; animation:scroll 32s linear infinite;}
+  @keyframes scroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+  .marquee-item{width:220px; height:220px; border-radius:20px; flex:0 0 auto; display:grid; place-items:center; font-family:'Poppins'; font-weight:800; color:#fff; font-size:16px; border:3px solid #fff; box-shadow:var(--shadow-sticker);}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:760px; margin:0 auto;}
+  .faq-item{border-bottom:1.5px solid var(--gray-mid); padding:22px 0;}
+  .faq-q{display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:16.5px; cursor:pointer; gap:20px;}
+  .faq-plus{width:26px;height:26px;border-radius:50%; background:var(--gray-light); display:grid; place-items:center; flex:0 0 auto; transition:transform .3s;}
+  .faq-item.open .faq-plus{transform:rotate(45deg); background:var(--blue); color:#fff;}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .35s ease, padding .35s ease; color:var(--gray-soft); font-size:15px; line-height:1.6;}
+  .faq-item.open .faq-a{max-height:200px; padding-top:14px;}
+
+  /* ---------- CTA FINAL ---------- */
+  .cta-final{text-align:center; padding:110px 24px; position:relative;}
+  .cta-final h2{font-size:clamp(30px,4.4vw,54px); max-width:700px; margin:0 auto 30px; font-weight:800; letter-spacing:-.02em;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--gray-dark); color:#fff; padding:70px 0 30px;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:40px; margin-bottom:50px;}
+  @media (max-width:760px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  footer h5{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:#8A8FA3; margin:0 0 16px;}
+  footer ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:11px;}
+  footer a{color:#C7CAD9; font-size:14.5px;}
+  footer a:hover{color:#fff;}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.1); padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:#8A8FA3; font-size:13px;}
+
+  .reveal{opacity:0; transform:translateY(28px);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo"><span class="logo-mark"></span>Creative Store</div>
+    <div class="nav-links">
+      <a href="#catalogo">Stickers</a>
+      <a href="#personaliza">Personalizar</a>
+      <a href="#mayoreo">Por mayor</a>
+      <a href="#servicios">Impresión</a>
+      <a href="#faq">Ayuda</a>
+    </div>
+    <div class="nav-cta">
+      <button class="icon-btn" aria-label="Buscar">🔍</button>
+      <button class="icon-btn" aria-label="Carrito">🛍️<span class="cart-count">3</span></button>
+      <button class="btn btn-primary">Comprar</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="sticker-field" id="stickerField">
+    <div class="sticker s1" style="--r:-9deg">😎</div>
+    <div class="sticker s2" style="--r:11deg">✨</div>
+    <div class="sticker s3" style="--r:6deg">🔥</div>
+    <div class="sticker s4" style="--r:-14deg">💛</div>
+    <div class="sticker s5" style="--r:4deg">🚀</div>
+    <div class="sticker s6" style="--r:-6deg">☁️</div>
+  </div>
+  <span class="eyebrow"><span class="eyebrow-dot"></span>Hechos y enviados en 48h</span>
+  <h1>Stickers que hacen<br>hablar tu <em>marca</em>.</h1>
+  <p class="sub">Diseña, personaliza y pega tu identidad en todas partes. Calidad premium, colores que no se apagan, envíos a toda Latinoamérica.</p>
+  <div class="hero-ctas">
+    <button class="btn btn-primary">Comprar stickers →</button>
+    <button class="btn btn-ghost">Personalizar el mío</button>
+  </div>
+  <p class="hero-note">+80.000 marcas ya pegaron su historia</p>
+</header>
+
+<section id="catalogo" class="wrap">
+  <div class="section-head">
+    <div>
+      <span class="kicker">Explora</span>
+      <h2>Encuentra tu categoría</h2>
+    </div>
+  </div>
+  <div class="cat-scroll">
+    <div class="cat-chip"><span class="dot" style="background:var(--blue)"></span>Troquelados</div>
+    <div class="cat-chip"><span class="dot" style="background:var(--yellow)"></span>Holográficos</div>
+    <div class="cat-chip"><span class="dot" style="background:var(--orange)"></span>Transparentes</div>
+    <div class="cat-chip"><span class="dot" style="background:var(--green)"></span>Vinilo mate</div>
+    <div class="cat-chip"><span class="dot" style="background:var(--gray-dark)"></span>Reflectivos</div>
+    <div class="cat-chip"><span class="dot" style="background:var(--blue)"></span>Hojas personalizadas</div>
+    <div class="cat-chip"><span class="dot" style="background:var(--orange)"></span>Kits por mayor</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="section-head">
+    <div>
+      <span class="kicker">Los más pegados</span>
+      <h2>Top stickers de la semana</h2>
+      <p>Los favoritos de nuestra comunidad, listos para producir en minutos.</p>
+    </div>
+    <button class="btn btn-ghost">Ver catálogo completo</button>
+  </div>
+  <div class="grid" id="productGrid"></div>
+  <div class="see-all"><button class="btn btn-dark">Ver los 240+ diseños →</button></div>
+</section>
+
+<section id="personaliza" class="wrap">
+  <div class="customize">
+    <div class="customize-inner">
+      <div>
+        <span class="kicker" style="color:var(--yellow)">Personaliza el tuyo</span>
+        <h2>Tu diseño, tu acabado,<br>tu sticker.</h2>
+        <p>Sube tu arte o ilustra desde cero. Elige el acabado y visualízalo antes de imprimir — sin sorpresas.</p>
+        <div class="finish-row">
+          <span class="finish active">Mate</span>
+          <span class="finish">Brillante</span>
+          <span class="finish">Holográfico</span>
+          <span class="finish">Transparente</span>
+          <span class="finish">Reflectivo</span>
+        </div>
+        <button class="btn btn-primary">Empezar a diseñar →</button>
+      </div>
+      <div class="mock-stage">
+        <div class="mock-sticker">tu logo aquí</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mayoreo" class="wrap">
+  <div class="wholesale">
+    <div>
+      <span class="kicker">Venta al por mayor</span>
+      <h2 style="font-size:clamp(26px,3.2vw,38px); font-weight:800; margin:0 0 10px;">Entre más pegas, menos pagas.</h2>
+      <p style="color:var(--gray-soft); max-width:400px; margin:0;">Mueve el volumen y mira el precio unitario caer en tiempo real.</p>
+      <div class="qty-row" id="qtyRow"></div>
+    </div>
+    <div class="result-card">
+      <div class="result-top">
+        <span class="result-price" id="resPrice">$0.42</span>
+        <span class="result-unit">por sticker</span>
+      </div>
+      <div style="color:var(--gray-soft); font-size:14px; font-weight:600;" id="resTotal">Total para 100 unidades: $42.00</div>
+      <span class="save-tag" id="resSave">🎉 Ahorras 0% vs. unidad</span>
+      <div class="result-bar"><div class="result-bar-fill" id="resBar" style="width:8%"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="servicios" class="wrap">
+  <div class="section-head">
+    <div>
+      <span class="kicker">También hacemos</span>
+      <h2>Impresión y branding para empresas</h2>
+      <p>Gran formato, vinilo y señalización con el mismo estándar de calidad que un sticker.</p>
+    </div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card"><div class="service-icon">🖨️</div><h4>Gran formato</h4><p>Impresiones de alta resolución para exhibiciones y eventos.</p></div>
+    <div class="service-card"><div class="service-icon">✂️</div><h4>Corte de vinilo</h4><p>Adhesivos y microperforado a la medida de tu vitrina.</p></div>
+    <div class="service-card"><div class="service-icon">🏳️</div><h4>Lonas y pendones</h4><p>Publicidad exterior resistente al clima, lista en días.</p></div>
+    <div class="service-card"><div class="service-icon">🧭</div><h4>Señalización</h4><p>Rotulación interior y exterior para oficinas y locales.</p></div>
+    <div class="service-card"><div class="service-icon">🏢</div><h4>Branding empresarial</h4><p>Aplicamos tu identidad en cada superficie de tu negocio.</p></div>
+    <div class="service-card"><div class="service-icon">🚐</div><h4>Wrapping</h4><p>Vehículos y vitrinas envueltos con acabado profesional.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="section-head">
+    <div><span class="kicker">Galería</span><h2>Pegados en el mundo real</h2></div>
+  </div>
+</section>
+<div class="marquee">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<section id="faq" class="wrap">
+  <div class="section-head" style="justify-content:center; text-align:center;">
+    <div><span class="kicker">Preguntas frecuentes</span><h2>Todo lo que debes saber</h2></div>
+  </div>
+  <div class="faq" id="faqList">
+    <div class="faq-item open">
+      <div class="faq-q">¿Cuánto tarda la producción y el envío? <span class="faq-plus">+</span></div>
+      <div class="faq-a">Producimos en 24–48h y el envío nacional toma entre 2 y 5 días hábiles según tu ciudad.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿Puedo pedir una muestra antes del pedido grande? <span class="faq-plus">+</span></div>
+      <div class="faq-a">Sí, ofrecemos un kit de muestras físicas de acabados para pedidos de mayoreo.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿Qué formatos de archivo aceptan? <span class="faq-plus">+</span></div>
+      <div class="faq-a">PNG, SVG, AI y PDF con fondo transparente. Si no tienes arte, nuestro equipo te ayuda a crearlo.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿Hacen envíos a toda Latinoamérica? <span class="faq-plus">+</span></div>
+      <div class="faq-a">Sí, enviamos a la mayoría de países de la región con seguimiento en tiempo real.</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final wrap">
+  <span class="kicker" style="justify-content:center; display:flex;">Empieza hoy</span>
+  <h2>¿Listo para que tu marca<br>se pegue en todas partes?</h2>
+  <div class="hero-ctas">
+    <button class="btn btn-primary">Comprar stickers →</button>
+    <button class="btn btn-ghost">Hablar con ventas</button>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="color:#fff; margin-bottom:14px;"><span class="logo-mark"></span>Creative Store</div>
+        <p style="color:#8A8FA3; font-size:14px; max-width:260px; line-height:1.6;">Stickers, impresión y branding para marcas que quieren pegarse en la memoria.</p>
+      </div>
+      <div>
+        <h5>Tienda</h5>
+        <ul><li><a href="#">Stickers</a></li><li><a href="#">Personalizado</a></li><li><a href="#">Por mayor</a></li><li><a href="#">Kits</a></li></ul>
+      </div>
+      <div>
+        <h5>Empresa</h5>
+        <ul><li><a href="#">Servicios</a></li><li><a href="#">Nosotros</a></li><li><a href="#">Clientes</a></li><li><a href="#">Blog</a></li></ul>
+      </div>
+      <div>
+        <h5>Ayuda</h5>
+        <ul><li><a href="#">Preguntas frecuentes</a></li><li><a href="#">Envíos</a></li><li><a href="#">Contacto</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Creative Store. Todos los derechos reservados.</span>
+      <span>Hecho con 💙 en Latinoamérica</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- Product data ----------
+const colors = ['#2F5CFF','#FFC839','#FF7A45','#28C76F','#14161F'];
+const products = [
+  {name:'Bolt Neon', emoji:'⚡', price:'$1.20', old:'$1.60', badge:'Bestseller'},
+  {name:'Cloud Nine', emoji:'☁️', price:'$0.95', badge:null},
+  {name:'Flame Pack', emoji:'🔥', price:'$1.10', old:'$1.40', badge:'Nuevo'},
+  {name:'Rocket Boy', emoji:'🚀', price:'$1.35', badge:null},
+  {name:'Heart Glow', emoji:'💛', price:'$0.85', badge:null},
+  {name:'Star Duo', emoji:'✨', price:'$1.05', old:'$1.30', badge:'-20%'},
+  {name:'Wave Set', emoji:'🌊', price:'$0.99', badge:null},
+  {name:'Smiley OG', emoji:'😎', price:'$0.90', badge:'Top'},
+];
+const grid = document.getElementById('productGrid');
+products.forEach((p,i)=>{
+  const c = colors[i % colors.length];
+  const el = document.createElement('div');
+  el.className = 'card reveal';
+  el.innerHTML = `
+    ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+    <div class="card-sticker" style="background:${c}">${p.emoji}</div>
+    <h3>${p.name}</h3>
+    <div class="price-row">
+      <div>${p.old ? `<span class="price-old">${p.old}</span>` : ''}<span class="price">${p.price}</span></div>
+      <button class="add-btn" aria-label="Agregar al carrito">+</button>
+    </div>`;
+  grid.appendChild(el);
+});
+
+// ---------- Marquee gallery ----------
+const marqueeItems = ['🚗 Wrap','💻 Laptop','🧴 Botella','🛹 Skate','🪖 Casco','📱 Celular','🧳 Maleta','🪟 Vidrio'];
+const track = document.getElementById('marqueeTrack');
+[...marqueeItems, ...marqueeItems].forEach((label,i)=>{
+  const el = document.createElement('div');
+  el.className = 'marquee-item';
+  el.style.background = colors[i % colors.length];
+  el.textContent = label;
+  track.appendChild(el);
+});
+
+// ---------- Wholesale calculator ----------
+const tiers = [
+  {qty:100, unit:0.42, base:0},
+  {qty:250, unit:0.36, base:14},
+  {qty:500, unit:0.30, base:29},
+  {qty:1000, unit:0.24, base:43},
+  {qty:2500, unit:0.19, base:55},
+  {qty:5000, unit:0.15, base:64},
+  {qty:10000, unit:0.11, base:74},
+];
+const qtyRow = document.getElementById('qtyRow');
+let active = 0;
+tiers.forEach((t,i)=>{
+  const chip = document.createElement('div');
+  chip.className = 'qty-chip' + (i===0 ? ' active' : '');
+  chip.textContent = t.qty.toLocaleString('es');
+  chip.addEventListener('click', ()=>{
+    active = i;
+    document.querySelectorAll('.qty-chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    updateCalc();
+  });
+  qtyRow.appendChild(chip);
+});
+function updateCalc(){
+  const t = tiers[active];
+  const total = (t.unit * t.qty).toFixed(2);
+  document.getElementById('resPrice').textContent = '$' + t.unit.toFixed(2);
+  document.getElementById('resTotal').textContent = `Total para ${t.qty.toLocaleString('es')} unidades: $${total}`;
+  document.getElementById('resSave').textContent = `🎉 Ahorras ${t.base}% vs. unidad`;
+  document.getElementById('resBar').style.width = Math.max(8, t.base) + '%';
+}
+updateCalc();
+
+// ---------- FAQ accordion ----------
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click', ()=>{
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+// ---------- Hero sticker parallax on cursor ----------
+const field = document.getElementById('stickerField');
+const stickers = field.querySelectorAll('.sticker');
+field.addEventListener('mousemove', (e)=>{
+  const {innerWidth:w, innerHeight:h} = window;
+  const x = (e.clientX / w - 0.5);
+  const y = (e.clientY / h - 0.5);
+  stickers.forEach((s,i)=>{
+    const depth = (i+1) * 6;
+    s.style.transform = `translate(${x*depth}px, ${y*depth}px) rotate(var(--r))`;
+  });
+});
+
+// ---------- GSAP entrance + scroll reveals ----------
+window.addEventListener('load', ()=>{
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.from('.hero h1', {y:40, opacity:0, duration:.9, ease:'power3.out'});
+  gsap.from('.hero .sub', {y:30, opacity:0, duration:.9, delay:.1, ease:'power3.out'});
+  gsap.from('.hero-ctas', {y:24, opacity:0, duration:.9, delay:.2, ease:'power3.out'});
+  gsap.from('.hero .eyebrow', {y:16, opacity:0, duration:.7, ease:'power3.out'});
+  gsap.from('.sticker', {
+    y:-60, opacity:0, scale:.6, duration:1, ease:'back.out(1.6)', stagger:.08, delay:.15,
+  });
+  stickers.forEach((s,i)=>{
+    gsap.to(s, {
+      rotate: `+=${(i%2===0?1:-1)*3}`,
+      y:'+=10',
+      duration: 2.4 + i*.3,
+      yoyo:true, repeat:-1, ease:'sine.inOut'
+    });
+  });
+  gsap.utils.toArray('.reveal, .card, .service-card, .cat-chip').forEach((el,i)=>{
+    gsap.fromTo(el, {opacity:0, y:24}, {
+      opacity:1, y:0, duration:.6, ease:'power2.out',
+      scrollTrigger:{trigger:el, start:'top 92%'},
+    });
+  });
+});
+</script>
+</body>
+</html>
