@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="description" content="Creative Store — Stickers personalizados, al por mayor, DTF, gran formato y publicidad visual en Colombia. Stickers que pegan duro.">
+<meta name="keywords" content="stickers personalizados Colombia, stickers al por mayor, stickers Bogotá, impresión stickers, vinilos personalizados">
+<title>Creative Store — Stickers que pegan duro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========================
+   TOKENS & RESET
+======================== */
+:root {
+  --blue: #005EDB;
+  --blue-mid: #3284F0;
+  --blue-light: #67A4F5;
+  --blue-pale: #9FC4F5;
+  --blue-ghost: #CCDAED;
+  --white: #ffffff;
+  --gray-light: #f4f6fb;
+  --gray: #e8edf7;
+  --dark: #0f1b35;
+  --checker: #eef3fc;
+  --radius-sticker: 18px;
+  --font-display: 'Nunito', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --nav-h: 60px;
+  --transition: 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--dark);
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Checkerboard pattern */
+.checker-bg {
+  background-color: var(--white);
+  background-image:
+    linear-gradient(45deg, var(--checker) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--checker) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--checker) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--checker) 75%);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+}
+
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: var(--font-body); border: none; }
+a { text-decoration: none; color: inherit; }
+
+/* ========================
+   REDUCED MOTION
+======================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .float-sticker { animation: none !important; }
+}
+
+/* ========================
+   NAVIGATION
+======================== */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--blue);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  transition: height 0.25s ease, box-shadow 0.25s ease;
+}
+.nav.scrolled { height: 50px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+
+.nav-logo {
+  height: 36px;
+  width: auto;
+}
+.nav.scrolled .nav-logo { height: 28px; }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav-icon-btn {
+  background: none;
+  border: none;
+  color: white;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: relative;
+  transition: background 0.2s;
+}
+.nav-icon-btn:hover, .nav-icon-btn:active { background: rgba(255,255,255,0.15); }
+.nav-icon-btn svg { width: 22px; height: 22px; }
+
+.cart-badge {
+  position: absolute;
+  top: 4px; right: 4px;
+  background: white;
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 800;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0);
+  transition: transform var(--transition);
+}
+.cart-badge.visible { transform: scale(1); }
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  background: var(--dark);
+  z-index: 999;
+  padding: 24px 20px 32px;
+  transform: translateY(-110%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+}
+.mobile-menu.open { transform: translateY(0); }
+.mobile-menu a {
+  display: block;
+  color: white;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 22px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: color 0.2s, padding-left 0.2s;
+}
+.mobile-menu a:last-child { border-bottom: none; }
+.mobile-menu a:active { color: var(--blue-pale); padding-left: 8px; }
+.menu-cta-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Desktop Nav Links */
+.nav-links {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .nav { padding: 0 40px; }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: white; }
+  .hamburger-btn { display: none; }
+}
+
+/* ========================
+   BUTTONS
+======================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: 50px;
+  min-height: 52px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.3px;
+  border: none;
+}
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: var(--white); color: var(--blue); }
+.btn-primary:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.2); transform: translateY(-2px); }
+.btn-outline { background: transparent; color: white; border: 2.5px solid rgba(255,255,255,0.6); }
+.btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+.btn-blue { background: var(--blue); color: white; }
+.btn-blue:hover { background: var(--blue-mid); box-shadow: 0 6px 20px rgba(0,94,219,0.4); transform: translateY(-2px); }
+.btn-sm { font-size: 13px; padding: 10px 20px; min-height: 44px; }
+
+/* ========================
+   HERO
+======================== */
+.hero {
+  min-height: 100svh;
+  background: var(--blue);
+  padding-top: var(--nav-h);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* checkerboard in hero corners */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.04) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255,255,255,0.04) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.04) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.04) 75%);
+  background-size: 32px 32px;
+  background-position: 0 0, 0 16px, 16px -16px, -16px 0;
+  pointer-events: none;
+}
+
+.hero-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px 80px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* Floating stickers around hero */
+.float-sticker {
+  position: absolute;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  background: white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2), 3px 3px 0 var(--blue-mid);
+  animation: floatBounce 3s ease-in-out infinite;
+  cursor: pointer;
+  user-select: none;
+  border: 3px solid white;
+}
+.float-sticker::after {
+  content: '';
+  position: absolute;
+  bottom: -6px; right: -6px;
+  width: 20px; height: 20px;
+  background: rgba(0,0,0,0.15);
+  border-radius: 4px;
+  filter: blur(4px);
+  transform: skewX(-5deg);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+.float-sticker:hover::after, .float-sticker.peeled::after {
+  bottom: -12px; right: -8px;
+  width: 28px; height: 28px;
+  filter: blur(8px);
+}
+.float-sticker:hover, .float-sticker.peeled {
+  transform: rotate(5deg) scale(1.08) !important;
+  animation-play-state: paused;
+}
+
+.fs-1 { width: 64px; height: 64px; top: 15%; left: 5%; transform: rotate(-15deg); animation-delay: 0s; }
+.fs-2 { width: 52px; height: 52px; top: 25%; right: 8%; transform: rotate(12deg); animation-delay: 0.5s; }
+.fs-3 { width: 56px; height: 56px; bottom: 30%; left: 4%; transform: rotate(8deg); animation-delay: 1s; }
+.fs-4 { width: 44px; height: 44px; bottom: 20%; right: 5%; transform: rotate(-20deg); animation-delay: 1.5s; }
+.fs-5 { width: 48px; height: 48px; top: 55%; left: 8%; transform: rotate(5deg); animation-delay: 0.8s; }
+
+@keyframes floatBounce {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -10px; }
+}
+
+.hero-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--blue-pale);
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(42px, 10vw, 84px);
+  color: white;
+  line-height: 0.95;
+  margin-bottom: 8px;
+}
+.hero-title em {
+  font-style: normal;
+  display: block;
+  -webkit-text-stroke: 3px white;
+  color: transparent;
+  font-size: clamp(36px, 9vw, 72px);
+}
+
+.hero-sub {
+  color: rgba(255,255,255,0.75);
+  font-size: clamp(14px, 3.5vw, 17px);
+  max-width: 360px;
+  margin: 16px auto 32px;
+  line-height: 1.6;
+}
+
+.hero-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* Mascot */
+.mascot-container {
+  position: relative;
+  margin: 32px auto 0;
+  width: 200px;
+  animation: mascotEntry 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes mascotEntry {
+  from { transform: translateY(40px) scale(0.8); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.mascot-img {
+  width: 100%;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+  animation: mascotIdle 4s ease-in-out infinite;
+}
+@keyframes mascotIdle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(1deg); }
+}
+
+/* Hero wave */
+.hero-wave {
+  display: block;
+  background: var(--blue);
+  margin-top: auto;
+}
+
+@media (min-width: 768px) {
+  .hero-inner {
+    flex-direction: row;
+    text-align: left;
+    gap: 40px;
+    padding: 60px 40px;
+    align-items: center;
+  }
+  .hero-content { flex: 1; }
+  .hero-btns { flex-direction: row; max-width: none; }
+  .hero-sub { margin: 16px 0 32px; }
+  .mascot-container { width: 280px; margin: 0; }
+  .fs-1 { left: 8%; top: 20%; }
+  .fs-2 { right: 6%; top: 18%; }
+}
+
+@media (min-width: 1024px) {
+  .hero-inner { padding: 80px 80px; gap: 60px; }
+  .hero-title { font-size: 88px; }
+  .mascot-container { width: 340px; }
+  .fs-1 { left: 4%; font-size: 40px; width: 80px; height: 80px; }
+  .fs-2 { right: 4%; font-size: 36px; width: 72px; height: 72px; }
+  .fs-3 { left: 6%; font-size: 36px; }
+  .fs-4 { right: 6%; font-size: 34px; }
+  .fs-5 { left: 10%; }
+}
+
+/* ========================
+   SCROLL RIBBON
+======================== */
+.ribbon {
+  background: var(--dark);
+  overflow: hidden;
+  padding: 14px 0;
+  white-space: nowrap;
+}
+.ribbon-inner {
+  display: inline-flex;
+  gap: 40px;
+  animation: ribbonScroll 18s linear infinite;
+}
+.ribbon:hover .ribbon-inner { animation-play-state: paused; }
+@keyframes ribbonScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ribbon-item {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.ribbon-item::after {
+  content: '✦';
+  color: var(--blue-pale);
+}
+
+/* ========================
+   SECTION SHARED
+======================== */
+.section { padding: 64px 20px; }
+.section-inner { max-width: 1200px; margin: 0 auto; }
+
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(28px, 6vw, 48px);
+  line-height: 1.05;
+  color: var(--dark);
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 15px;
+  color: #667;
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+@media (min-width: 768px) {
+  .section { padding: 80px 40px; }
+}
+
+/* ========================
+   STICKER WALL (CATEGORÍAS)
+======================== */
+.categories-section {
+  background: var(--gray-light);
+}
+.cat-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: 0 -20px;
+  padding: 0 20px 16px;
+}
+.cat-scroll-wrapper::-webkit-scrollbar { display: none; }
+.cat-grid {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  padding-bottom: 8px;
+}
+.cat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px 16px;
+  text-align: center;
+  width: 130px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 2.5px solid transparent;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.cat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--blue);
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: 18px;
+}
+.cat-card:hover, .cat-card:active {
+  border-color: var(--blue);
+  transform: translateY(-4px) rotate(-1deg);
+  box-shadow: 4px 8px 0 var(--blue-pale);
+}
+.cat-card:hover::before { opacity: 0.04; }
+.cat-icon { font-size: 38px; margin-bottom: 10px; position: relative; z-index: 1; }
+.cat-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--blue);
+  position: relative;
+  z-index: 1;
+}
+
+/* Desktop cat grid */
+@media (min-width: 768px) {
+  .cat-scroll-wrapper { overflow-x: visible; margin: 0; padding: 0; }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: auto;
+    gap: 16px;
+  }
+  .cat-card { width: auto; }
+}
+@media (min-width: 1024px) {
+  .cat-grid { grid-template-columns: repeat(8, 1fr); }
+}
+
+/* ========================
+   STICKER PRODUCT WALL
+======================== */
+.products-section {
+  background: var(--white);
+}
+.product-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin: 0 -20px;
+  padding: 8px 20px 24px;
+}
+.product-scroll::-webkit-scrollbar { display: none; }
+.product-wall {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+}
+
+.product-card {
+  background: white;
+  border-radius: 22px;
+  overflow: hidden;
+  width: 200px;
+  flex-shrink: 0;
+  border: 3px solid var(--dark);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.product-card:hover {
+  transform: rotate(-2deg) translateY(-6px);
+  box-shadow: 6px 8px 0 var(--dark);
+}
+.product-card:nth-child(even):hover {
+  transform: rotate(2deg) translateY(-6px);
+}
+
+/* Peel effect */
+.product-card .peel-corner {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 32px 32px;
+  border-color: transparent transparent var(--dark) transparent;
+  transition: border-width 0.3s ease;
+  z-index: 5;
+}
+.product-card:hover .peel-corner,
+.product-card.peeled .peel-corner {
+  border-width: 0 0 48px 48px;
+}
+.peel-shadow {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 32px; height: 32px;
+  background: rgba(0,0,0,0.15);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  filter: blur(4px);
+  transition: all 0.3s ease;
+  z-index: 4;
+}
+.product-card:hover .peel-shadow,
+.product-card.peeled .peel-shadow {
+  width: 48px; height: 48px;
+  filter: blur(8px);
+}
+
+.product-img {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+}
+.pi-1 { background: linear-gradient(135deg, #e8f0ff, #c5d9ff); }
+.pi-2 { background: linear-gradient(135deg, #fff5e8, #ffe0b0); }
+.pi-3 { background: linear-gradient(135deg, #f0ffe8, #c8f0b0); }
+.pi-4 { background: linear-gradient(135deg, #ffe8f8, #f0b0e0); }
+.pi-5 { background: linear-gradient(135deg, #e8f8ff, #b0dff0); }
+.pi-6 { background: linear-gradient(135deg, #fff0e8, #f0c8b0); }
+
+.product-info { padding: 14px; }
+.product-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+.product-price {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--blue);
+}
+.product-add {
+  width: 36px; height: 36px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  float: right;
+  margin-top: -6px;
+  transition: transform var(--transition), background 0.2s;
+}
+.product-add:hover { background: var(--blue-mid); transform: scale(1.15); }
+.product-add:active { transform: scale(0.92); }
+
+/* Desktop masonry */
+@media (min-width: 1024px) {
+  .product-scroll { overflow-x: visible; margin: 0; padding: 8px 0 24px; }
+  .product-wall {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: auto;
+    gap: 20px;
+  }
+  .product-card { width: auto; }
+  .product-card:nth-child(2) { transform: rotate(1.5deg); }
+  .product-card:nth-child(4) { transform: rotate(-1deg); }
+  .product-card:nth-child(6) { transform: rotate(2deg); }
+}
+
+/* ========================
+   CONFIGURADOR (PERSONALIZA)
+======================== */
+.config-section {
+  background: var(--dark);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.config-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, rgba(50,132,240,0.08) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(50,132,240,0.08) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(50,132,240,0.08) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(50,132,240,0.08) 75%);
+  background-size: 28px 28px;
+  background-position: 0 0, 0 14px, 14px -14px, -14px 0;
+  pointer-events: none;
+}
+.config-section .section-title { color: white; }
+.config-section .section-eyebrow { color: var(--blue-pale); }
+
+.steps-track {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.steps-track::-webkit-scrollbar { display: none; }
+.step-pill {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.step-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: white;
+}
+
+.config-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Sticker Preview */
+.sticker-preview {
+  background: var(--checker);
+  border-radius: 24px;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eef3fc;
+  background-image:
+    linear-gradient(45deg, #dde8f8 25%, transparent 25%),
+    linear-gradient(-45deg, #dde8f8 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #dde8f8 75%),
+    linear-gradient(-45deg, transparent 75%, #dde8f8 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  position: relative;
+  overflow: hidden;
+}
+.preview-sticker {
+  background: white;
+  border-radius: 16px;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15), 4px 4px 0 rgba(0,94,219,0.2);
+  border: 3px solid white;
+  transition: all 0.4s var(--transition);
+  position: relative;
+}
+.preview-sticker.holo {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb, #84fab0, #8fd3f4);
+  background-size: 300% 300%;
+  animation: holoShift 3s ease infinite;
+}
+@keyframes holoShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.preview-sticker.matte { filter: saturate(0.6) brightness(0.95); }
+.preview-sticker.transparent {
+  background: rgba(255,255,255,0.3);
+  backdrop-filter: blur(8px);
+  border: 2px dashed rgba(0,94,219,0.4);
+}
+.preview-finish-label {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 50px;
+  white-space: nowrap;
+}
+
+/* Config Options */
+.config-options h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.upload-zone {
+  border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: 16px;
+  padding: 32px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 20px;
+}
+.upload-zone:hover {
+  border-color: var(--blue-pale);
+  background: rgba(50,132,240,0.08);
+}
+.upload-icon { font-size: 36px; margin-bottom: 8px; }
+.upload-zone p { color: rgba(255,255,255,0.6); font-size: 14px; }
+.upload-zone strong { color: white; }
+
+.option-group { margin-bottom: 20px; }
+.option-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 10px;
+  display: block;
+}
+.option-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.option-pill {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+.option-pill.sel {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: white;
+}
+.option-pill:hover { border-color: var(--blue-pale); color: white; }
+
+/* Size selector */
+.size-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.size-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+}
+.size-btn.sel { background: var(--blue); border-color: var(--blue); color: white; }
+
+@media (min-width: 768px) {
+  .config-layout { flex-direction: row; align-items: flex-start; }
+  .sticker-preview { flex: 1; min-height: 360px; }
+  .config-options { flex: 1; }
+}
+
+/* ========================
+   MAYORISTA
+======================== */
+.wholesale-section {
+  background: var(--blue);
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.wholesale-section .section-title { color: white; }
+.wholesale-section .section-eyebrow { color: var(--blue-pale); }
+
+.qty-selector {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.qty-btn {
+  background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 50px;
+  padding: 10px 18px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 48px;
+}
+.qty-btn.active {
+  background: white;
+  border-color: white;
+  color: var(--blue);
+  transform: scale(1.05);
+}
+.qty-btn:hover:not(.active) { border-color: rgba(255,255,255,0.6); color: white; }
+
+.sticker-visual-field {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 20px;
+  transition: all 0.4s ease;
+}
+.ws-sticker {
+  font-size: 20px;
+  animation: popIn 0.3s var(--transition) both;
+}
+@keyframes popIn {
+  from { transform: scale(0) rotate(30deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.wholesale-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+.ws-stat {
+  background: rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 16px;
+}
+.ws-stat .ws-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+.ws-stat .ws-value { font-family: var(--font-display); font-weight: 900; font-size: 22px; color: white; }
+.ws-stat .ws-value.saving { color: #7fffb8; }
+.wholesale-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+/* ========================
+   GRAN FORMATO
+======================== */
+.gf-section { background: var(--gray-light); }
+.gf-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.gf-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1.5px solid var(--gray);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.gf-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+.gf-img {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+}
+.gf-1 { background: linear-gradient(135deg, #e8f0ff, #c5d9ff); }
+.gf-2 { background: linear-gradient(135deg, #f0e8ff, #d8c5ff); }
+.gf-3 { background: linear-gradient(135deg, #e8fff0, #c5ffd9); }
+.gf-4 { background: linear-gradient(135deg, #fff8e8, #ffedc5); }
+
+.gf-info { padding: 16px 18px; }
+.gf-tag {
+  display: inline-block;
+  background: var(--blue);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+  margin-bottom: 8px;
+}
+.gf-info h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+.gf-info p { font-size: 13px; color: #667; }
+
+@media (min-width: 768px) {
+  .gf-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .gf-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ========================
+   GALERÍA
+======================== */
+.gallery-section { background: white; }
+.gallery-grid {
+  columns: 2;
+  column-gap: 12px;
+}
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+.gallery-thumb.tall { aspect-ratio: 3/4; font-size: 48px; }
+.gb-1 { background: linear-gradient(135deg, #e8f0ff, #c5d9ff); }
+.gb-2 { background: linear-gradient(135deg, #fff0e8, #ffd9c5); }
+.gb-3 { background: linear-gradient(135deg, #f0ffe8, #d9ffc5); }
+.gb-4 { background: linear-gradient(135deg, #f8e8ff, #e8c5ff); }
+.gb-5 { background: linear-gradient(135deg, #e8fff8, #c5ffe8); }
+.gb-6 { background: linear-gradient(135deg, #fff8e8, #ffe8c5); }
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,94,219,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 28px;
+}
+
+@media (min-width: 768px) {
+  .gallery-grid { columns: 3; }
+}
+@media (min-width: 1024px) {
+  .gallery-grid { columns: 4; }
+}
+
+/* ========================
+   SOCIAL PROOF
+======================== */
+.proof-section {
+  background: var(--dark);
+  color: white;
+}
+.proof-section .section-title { color: white; }
+.proof-section .section-eyebrow { color: var(--blue-pale); }
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.stat-card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 36px;
+  color: white;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+.reviews-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 -20px;
+  padding: 4px 20px 16px;
+}
+.reviews-scroll::-webkit-scrollbar { display: none; }
+.reviews-row { display: flex; gap: 14px; width: max-content; }
+
+.review-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 18px;
+  padding: 20px;
+  width: 260px;
+  flex-shrink: 0;
+}
+.review-stars { font-size: 14px; margin-bottom: 10px; color: #fbbf24; letter-spacing: 2px; }
+.review-text { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 14px; }
+.review-author { font-size: 12px; font-weight: 700; color: var(--blue-pale); }
+
+@media (min-width: 768px) {
+  .stats-row { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ========================
+   FAQ
+======================== */
+.faq-section { background: var(--gray-light); }
+.faq-list { max-width: 720px; }
+.faq-item {
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1.5px solid var(--gray);
+}
+.faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: none;
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--dark);
+  text-align: left;
+  cursor: pointer;
+  min-height: 60px;
+  gap: 12px;
+}
+.faq-arrow {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  background: var(--gray-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: transform 0.25s;
+}
+.faq-item.open .faq-arrow { transform: rotate(180deg); background: var(--blue); color: white; }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.faq-a p { padding: 0 20px 18px; font-size: 14px; color: #556; line-height: 1.7; }
+.faq-item.open .faq-a { max-height: 200px; }
+
+/* ========================
+   FOOTER
+======================== */
+.footer {
+  background: var(--dark);
+  color: white;
+  padding: 56px 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.footer-mascot {
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 140px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+.footer-logo-img { height: 48px; width: auto; margin-bottom: 12px; }
+.footer-tagline { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; max-width: 280px; }
+.footer-col h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul a { color: rgba(255,255,255,0.5); font-size: 14px; transition: color 0.2s; }
+.footer-col ul a:hover { color: white; }
+.footer-social { display: flex; gap: 10px; margin-top: 16px; }
+.social-btn {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: background 0.2s;
+  cursor: pointer;
+  min-height: 44px; min-width: 44px;
+}
+.social-btn:hover { background: var(--blue); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media (min-width: 768px) {
+  .footer { padding: 72px 40px 32px; }
+  .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; }
+  .footer-bottom { flex-direction: row; justify-content: space-between; }
+}
+
+/* ========================
+   MOBILE BOTTOM BAR
+======================== */
+.bottom-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--dark);
+  padding: 12px 16px 16px;
+  display: flex;
+  gap: 10px;
+  z-index: 900;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+}
+.bottom-bar.visible { transform: translateY(0); }
+.bottom-bar .btn { flex: 1; justify-content: center; font-size: 14px; }
+.bb-shop { background: var(--blue); color: white; }
+.bb-wa { background: #25D366; color: white; }
+
+@media (min-width: 768px) {
+  .bottom-bar { display: none; }
+}
+
+/* WhatsApp floating */
+.wa-float {
+  position: fixed;
+  bottom: 84px; right: 16px;
+  z-index: 800;
+  display: none;
+}
+@media (min-width: 768px) {
+  .wa-float { display: block; bottom: 24px; right: 24px; }
+}
+.wa-float-btn {
+  width: 56px; height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+  cursor: pointer;
+  transition: transform var(--transition);
+  animation: waPulse 2s ease-in-out infinite;
+  border: none;
+}
+.wa-float-btn:hover { transform: scale(1.1); animation: none; }
+@keyframes waPulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
+  50% { box-shadow: 0 4px 32px rgba(37,211,102,0.7); }
+}
+
+/* ========================
+   CART FLYOUT
+======================== */
+.cart-flyout {
+  position: fixed;
+  top: 0; right: -360px;
+  width: 340px;
+  max-width: 100vw;
+  height: 100%;
+  background: white;
+  z-index: 2000;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+  transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+  display: flex;
+  flex-direction: column;
+}
+.cart-flyout.open { right: 0; }
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.cart-overlay.show { opacity: 1; pointer-events: all; }
+.cart-header {
+  background: var(--blue);
+  color: white;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cart-header h3 { font-family: var(--font-display); font-weight: 800; font-size: 16px; }
+.cart-close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.cart-close:hover { background: rgba(255,255,255,0.15); }
+.cart-body { flex: 1; overflow-y: auto; padding: 20px; }
+.cart-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #667;
+}
+.cart-empty .empty-icon { font-size: 48px; margin-bottom: 12px; }
+.cart-empty p { font-size: 14px; line-height: 1.6; }
+.cart-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray);
+}
+.cart-item-thumb {
+  width: 56px; height: 56px;
+  background: var(--gray-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name { font-family: var(--font-display); font-weight: 700; font-size: 14px; }
+.cart-item-price { font-size: 13px; color: var(--blue); font-weight: 700; margin-top: 2px; }
+.cart-item-remove { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.cart-item-remove:hover { background: #fee; color: #e44; }
+.cart-footer { padding: 16px 20px 24px; border-top: 1px solid var(--gray); }
+.cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.cart-total-label { font-size: 14px; color: #667; }
+.cart-total-num { font-family: var(--font-display); font-weight: 900; font-size: 22px; color: var(--dark); }
+
+/* ========================
+   FLYING STICKER ANIMATION
+======================== */
+.flying-sticker {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 32px;
+  transition: none;
+}
+
+/* ========================
+   SCROLL ANIMATIONS
+======================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- ======================== NAVIGATION ======================== -->
+<nav class="nav" id="nav">
+  <!-- Logo: usar imagen real del logo de Creative Store -->
+  <div class="nav-logo" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:white;letter-spacing:-1px;">
+    CREATIVE<span style="color:#9FC4F5">STORE</span>
+  </div>
+
+  <!-- Desktop links -->
+  <ul class="nav-links">
+    <li><a href="#categorias">Stickers</a></li>
+    <li><a href="#personaliza">Personalizar</a></li>
+    <li><a href="#mayorista">Al por mayor</a></li>
+    <li><a href="#gran-formato">Gran Formato</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <!-- Search -->
+    <button class="nav-icon-btn" aria-label="Buscar">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </button>
+    <!-- Cart -->
+    <button class="nav-icon-btn" id="cart-btn" aria-label="Carrito" onclick="openCart()">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+    <!-- Hamburger -->
+    <button class="nav-icon-btn hamburger-btn" id="menu-btn" aria-label="Menú" onclick="toggleMenu()">
+      <svg id="menu-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#categorias" onclick="closeMenu()">Stickers</a>
+  <a href="#personaliza" onclick="closeMenu()">Personalizar</a>
+  <a href="#mayorista" onclick="closeMenu()">Al por mayor</a>
+  <a href="#gran-formato" onclick="closeMenu()">Gran Formato</a>
+  <a href="#galeria" onclick="closeMenu()">Galería</a>
+  <a href="#contacto" onclick="closeMenu()">Contacto</a>
+  <div class="menu-cta-row">
+    <button class="btn btn-blue btn-sm" style="flex:1">Comprar 🛍</button>
+    <button class="btn btn-sm" style="background:#25D366;color:white;flex:1" onclick="openWA()">WhatsApp 💬</button>
+  </div>
+</div>
+
+<!-- ======================== HERO ======================== -->
+<section class="hero" id="hero">
+  <!-- Floating stickers -->
+  <div class="float-sticker fs-1" onclick="peelSticker(this)">✨</div>
+  <div class="float-sticker fs-2" onclick="peelSticker(this)">⭐</div>
+  <div class="float-sticker fs-3" onclick="peelSticker(this)">🌈</div>
+  <div class="float-sticker fs-4" onclick="peelSticker(this)">💥</div>
+  <div class="float-sticker fs-5" onclick="peelSticker(this)">🔥</div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-label">✦ Envíos a todo Colombia · Calidad premium</p>
+      <h1 class="hero-title">
+        STICKERS<br>
+        <em>QUE PEGAN</em><br>
+        DURO.
+      </h1>
+      <p class="hero-sub">
+        Personalizados, resistentes y hechos para llevar tus ideas a cualquier lugar.
+      </p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="document.querySelector('#categorias').scrollIntoView({behavior:'smooth'})">
+          COMPRAR STICKERS 🎯
+        </button>
+        <button class="btn btn-outline" onclick="document.querySelector('#personaliza').scrollIntoView({behavior:'smooth'})">
+          PERSONALIZAR →
+        </button>
+      </div>
+    </div>
+
+    <!-- Mascota (usar imagen real: /mnt/user-data/uploads/1786325601026_image.png) -->
+    <div class="mascot-container">
+      <div style="width:220px;height:280px;background:rgba(255,255,255,0.1);border-radius:24px;display:flex;align-items:center;justify-content:center;position:relative;border:3px solid rgba(255,255,255,0.2);">
+        <!-- En Wordpress: reemplazar por <img src="mascota.png" class="mascot-img"> -->
+        <div style="text-align:center;color:white;">
+          <div style="font-size:80px;animation:mascotIdle 4s ease-in-out infinite;">👦</div>
+          <div style="font-size:12px;opacity:0.6;margin-top:8px;font-weight:700;letter-spacing:1px;">CREATIVE BOY</div>
+        </div>
+        <!-- Sticker badge on mascot -->
+        <div style="position:absolute;top:-16px;right:-16px;background:white;color:var(--blue);font-family:var(--font-display);font-weight:900;font-size:11px;padding:6px 12px;border-radius:50px;transform:rotate(8deg);box-shadow:2px 2px 0 var(--blue-mid);">
+          PREMIUM ✦
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <svg class="hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" style="display:block;height:60px;">
+    <path d="M0,40 C200,80 400,0 600,40 C800,80 1000,0 1200,40 C1320,60 1380,30 1440,40 L1440,60 L0,60 Z" fill="white"/>
+  </svg>
+</section>
+
+<!-- ======================== RIBBON ======================== -->
+<div class="ribbon">
+  <div class="ribbon-inner" id="ribbon">
+    <span class="ribbon-item">STICKERS PERSONALIZADOS</span>
+    <span class="ribbon-item">AL POR MAYOR</span>
+    <span class="ribbon-item">HOLOGRÁFICOS</span>
+    <span class="ribbon-item">FOTOLUMINICENTES</span>
+    <span class="ribbon-item">3D LENTICULAR</span>
+    <span class="ribbon-item">VINILO BLANCO</span>
+    <span class="ribbon-item">DTF / TEXTIL</span>
+    <span class="ribbon-item">GRAN FORMATO</span>
+    <span class="ribbon-item">ENVÍOS COLOMBIA</span>
+    <span class="ribbon-item">STICKERS PERSONALIZADOS</span>
+    <span class="ribbon-item">AL POR MAYOR</span>
+    <span class="ribbon-item">HOLOGRÁFICOS</span>
+    <span class="ribbon-item">FOTOLUMINICENTES</span>
+    <span class="ribbon-item">3D LENTICULAR</span>
+    <span class="ribbon-item">VINILO BLANCO</span>
+    <span class="ribbon-item">DTF / TEXTIL</span>
+    <span class="ribbon-item">GRAN FORMATO</span>
+    <span class="ribbon-item">ENVÍOS COLOMBIA</span>
+  </div>
+</div>
+
+<!-- ======================== CATEGORÍAS ======================== -->
+<section class="section categories-section" id="categorias">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Explora</p>
+    <h2 class="section-title reveal reveal-delay-1">¿Qué tipo de sticker<br>estás buscando?</h2>
+    <div class="cat-scroll-wrapper reveal reveal-delay-2">
+      <div class="cat-grid">
+        <div class="cat-card" onclick="filterProducts('personalizados')">
+          <div class="cat-icon">✨</div>
+          <div class="cat-name">Personalizados</div>
+        </div>
+        <div class="cat-card" onclick="filterProducts('mayorista')">
+          <div class="cat-icon">📦</div>
+          <div class="cat-name">Al por mayor</div>
+        </div>
+        <div class="cat-card" onclick="filterProducts('holo')">
+          <div class="cat-icon">🌈</div>
+          <div class="cat-name">Holográfico</div>
+        </div>
+        <div class="cat-card" onclick="filterProducts('3d')">
+          <div class="cat-icon">🔮</div>
+          <div class="cat-name">3D Lenticular</div>
+        </div>
+        <div class="cat-card" onclick="filterProducts('fosfo')">
+          <div class="cat-icon">🌟</div>
+          <div class="cat-name">Fotoluminicente</div>
+        </div>
+        <div class="cat-card" onclick="filterProducts('vinilo')">
+          <div class="cat-icon">🎯</div>
+          <div class="cat-name">Vinilo Blanco</div>
+        </div>
+        <div class="cat-card" onclick="filterProducts('dtf')">
+          <div class="cat-icon">👕</div>
+          <div class="cat-name">DTF / Textil</div>
+        </div>
+        <div class="cat-card" onclick="filterProducts('branding')">
+          <div class="cat-icon">🏢</div>
+          <div class="cat-name">Branding</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== STICKER WALL (PRODUCTOS) ======================== -->
+<section class="section products-section">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Los más pedidos</p>
+    <h2 class="section-title reveal reveal-delay-1">STICKER WALL 🔥</h2>
+    <p class="section-sub reveal reveal-delay-2">Los favoritos de nuestra comunidad esta semana.</p>
+    <div class="product-scroll">
+      <div class="product-wall" id="product-wall">
+        <div class="product-card reveal">
+          <div class="product-img pi-1">✨</div>
+          <div class="peel-corner"></div>
+          <div class="peel-shadow"></div>
+          <div class="product-info">
+            <div class="product-name">Holo Personalizado</div>
+            <div class="product-price">desde $8.500
+              <button class="product-add" onclick="addToCart('Holo Personalizado', 8500, '✨', event)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card reveal reveal-delay-1">
+          <div class="product-img pi-2">🌟</div>
+          <div class="peel-corner"></div>
+          <div class="peel-shadow"></div>
+          <div class="product-info">
+            <div class="product-name">Fosforescente</div>
+            <div class="product-price">desde $7.000
+              <button class="product-add" onclick="addToCart('Fosforescente', 7000, '🌟', event)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card reveal reveal-delay-2">
+          <div class="product-img pi-3">🔮</div>
+          <div class="peel-corner"></div>
+          <div class="peel-shadow"></div>
+          <div class="product-info">
+            <div class="product-name">3D Lenticular</div>
+            <div class="product-price">desde $12.000
+              <button class="product-add" onclick="addToCart('3D Lenticular', 12000, '🔮', event)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card reveal reveal-delay-3">
+          <div class="product-img pi-4">💥</div>
+          <div class="peel-corner"></div>
+          <div class="peel-shadow"></div>
+          <div class="product-info">
+            <div class="product-name">Vinilo Kiss-Cut</div>
+            <div class="product-price">desde $6.500
+              <button class="product-add" onclick="addToCart('Vinilo Kiss-Cut', 6500, '💥', event)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card reveal">
+          <div class="product-img pi-5">🎭</div>
+          <div class="peel-corner"></div>
+          <div class="peel-shadow"></div>
+          <div class="product-info">
+            <div class="product-name">Sticker Pack x10</div>
+            <div class="product-price">desde $45.000
+              <button class="product-add" onclick="addToCart('Sticker Pack x10', 45000, '🎭', event)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="product-card reveal reveal-delay-1">
+          <div class="product-img pi-6">🌈</div>
+          <div class="peel-corner"></div>
+          <div class="peel-shadow"></div>
+          <div class="product-info">
+            <div class="product-name">DTF Textil</div>
+            <div class="product-price">desde $9.000
+              <button class="product-add" onclick="addToCart('DTF Textil', 9000, '🌈', event)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== PERSONALIZA ======================== -->
+<section class="section config-section" id="personaliza">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Tu sticker, tu reglas</p>
+    <h2 class="section-title reveal reveal-delay-1">PERSONALIZA<br>TU STICKER</h2>
+
+    <div class="steps-track reveal reveal-delay-2">
+      <div class="step-pill active" data-step="1">① Diseño</div>
+      <div class="step-pill" data-step="2">② Tamaño</div>
+      <div class="step-pill" data-step="3">③ Material</div>
+      <div class="step-pill" data-step="4">④ Acabado</div>
+      <div class="step-pill" data-step="5">⑤ Cantidad</div>
+      <div class="step-pill" data-step="6">⑥ Comprar</div>
+    </div>
+
+    <div class="config-layout reveal">
+      <!-- Preview -->
+      <div class="sticker-preview" id="sticker-preview">
+        <div class="preview-sticker" id="preview-sticker">
+          <span id="preview-emoji">🎨</span>
+          <div class="preview-finish-label" id="preview-label">BRILLANTE</div>
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div class="config-options">
+        <!-- Upload -->
+        <div class="upload-zone" onclick="document.getElementById('file-upload').click()">
+          <div class="upload-icon">📤</div>
+          <p><strong>Sube tu diseño</strong></p>
+          <p>JPG, PNG, SVG, AI · máx 50MB</p>
+        </div>
+        <input type="file" id="file-upload" accept="image/*" style="display:none" onchange="handleUpload(event)">
+
+        <!-- Tamaño -->
+        <div class="option-group">
+          <span class="option-label">Tamaño</span>
+          <div class="size-buttons">
+            <button class="size-btn sel" onclick="selectSize(this,'3×3')">3×3 cm</button>
+            <button class="size-btn" onclick="selectSize(this,'5×5')">5×5 cm</button>
+            <button class="size-btn" onclick="selectSize(this,'7×7')">7×7 cm</button>
+            <button class="size-btn" onclick="selectSize(this,'10×10')">10×10 cm</button>
+            <button class="size-btn" onclick="selectSize(this,'custom')">Personalizado</button>
+          </div>
+        </div>
+
+        <!-- Material -->
+        <div class="option-group">
+          <span class="option-label">Material</span>
+          <div class="option-pills">
+            <button class="option-pill sel" onclick="selectOption(this, 'material')">Vinilo</button>
+            <button class="option-pill" onclick="selectOption(this, 'material')">Holográfico</button>
+            <button class="option-pill" onclick="selectOption(this, 'material')">3D Lenticular</button>
+            <button class="option-pill" onclick="selectOption(this, 'material')">Transparente</button>
+            <button class="option-pill" onclick="selectOption(this, 'material')">Kraft</button>
+          </div>
+        </div>
+
+        <!-- Acabado -->
+        <div class="option-group">
+          <span class="option-label">Acabado</span>
+          <div class="option-pills">
+            <button class="option-pill sel" onclick="selectFinish(this, 'BRILLANTE')">Brillante</button>
+            <button class="option-pill" onclick="selectFinish(this, 'MATE')">Mate</button>
+            <button class="option-pill" onclick="selectFinish(this, 'HOLOGRÁFICO', 'holo')">Holográfico</button>
+            <button class="option-pill" onclick="selectFinish(this, 'TRANSPARENTE', 'transparent')">Transparente</button>
+            <button class="option-pill" onclick="selectFinish(this, 'REFLECTIVO')">Reflectivo</button>
+          </div>
+        </div>
+
+        <!-- Cantidad -->
+        <div class="option-group">
+          <span class="option-label">Cantidad</span>
+          <div class="option-pills">
+            <button class="option-pill sel" onclick="selectOption(this,'qty')">25</button>
+            <button class="option-pill" onclick="selectOption(this,'qty')">50</button>
+            <button class="option-pill" onclick="selectOption(this,'qty')">100</button>
+            <button class="option-pill" onclick="selectOption(this,'qty')">250</button>
+            <button class="option-pill" onclick="selectOption(this,'qty')">500+</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;background:white;color:var(--blue);margin-top:8px;" onclick="addToCart('Sticker Personalizado', 25000, '🎨', event)">
+          AGREGAR AL CARRITO 🛍
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== MAYORISTA ======================== -->
+<section class="section wholesale-section" id="mayorista">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Venta al por mayor</p>
+    <h2 class="section-title reveal reveal-delay-1">¿NECESITAS<br>MUCHOS?</h2>
+    <p class="section-sub" style="color:rgba(255,255,255,0.7);margin:0 auto 24px;" class="reveal">
+      Entre más stickers, mejor precio. Así de simple.
+    </p>
+
+    <!-- Qty Selector -->
+    <div class="qty-selector reveal">
+      <button class="qty-btn active" data-qty="100" data-price="450" data-time="3–5 días" onclick="selectQty(this)">100</button>
+      <button class="qty-btn" data-qty="250" data-price="380" data-time="3–5 días" onclick="selectQty(this)">250</button>
+      <button class="qty-btn" data-qty="500" data-price="320" data-time="5–7 días" onclick="selectQty(this)">500</button>
+      <button class="qty-btn" data-qty="1000" data-price="280" data-time="5–7 días" onclick="selectQty(this)">1.000</button>
+      <button class="qty-btn" data-qty="2500" data-price="230" data-time="7–10 días" onclick="selectQty(this)">2.500</button>
+      <button class="qty-btn" data-qty="5000" data-price="190" data-time="10–14 días" onclick="selectQty(this)">5.000</button>
+      <button class="qty-btn" data-qty="10000" data-price="150" data-time="14–21 días" onclick="selectQty(this)">10.000+</button>
+    </div>
+
+    <!-- Visual field -->
+    <div class="sticker-visual-field reveal" id="sticker-field"></div>
+
+    <!-- Stats -->
+    <div class="wholesale-stats reveal">
+      <div class="ws-stat">
+        <div class="ws-label">Precio unitario</div>
+        <div class="ws-value" id="ws-unit">$450</div>
+      </div>
+      <div class="ws-stat">
+        <div class="ws-label">Total estimado</div>
+        <div class="ws-value" id="ws-total">$45.000</div>
+      </div>
+      <div class="ws-stat">
+        <div class="ws-label">Tu ahorro</div>
+        <div class="ws-value saving" id="ws-saving">—</div>
+      </div>
+      <div class="ws-stat">
+        <div class="ws-label">Producción</div>
+        <div class="ws-value" style="font-size:16px" id="ws-time">3–5 días</div>
+      </div>
+    </div>
+
+    <div class="wholesale-btns reveal">
+      <button class="btn btn-primary" onclick="addToCart('Pack Mayorista', 45000, '📦', event)">COMPRAR AL POR MAYOR</button>
+      <button class="btn btn-outline" onclick="openWA()">COTIZAR PEDIDO 💬</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== GRAN FORMATO ======================== -->
+<section class="section gf-section" id="gran-formato">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Y eso no es todo</p>
+    <h2 class="section-title reveal reveal-delay-1">IMPRESIÓN<br>EN GRAN FORMATO</h2>
+    <p class="section-sub reveal reveal-delay-2">
+      Creative Store también puede encargarse de toda la comunicación visual de tu negocio.
+    </p>
+    <div class="gf-grid">
+      <div class="gf-card reveal">
+        <div class="gf-img gf-1">🖼️</div>
+        <div class="gf-info">
+          <span class="gf-tag">Interior</span>
+          <h3>Lonas y Pendones</h3>
+          <p>Alta resolución para interiores y exteriores</p>
+        </div>
+      </div>
+      <div class="gf-card reveal reveal-delay-1">
+        <div class="gf-img gf-2">🪟</div>
+        <div class="gf-info">
+          <span class="gf-tag">Decoración</span>
+          <h3>Vinilos y Microperforado</h3>
+          <p>Para vidrieras, escaparates y ventanas</p>
+        </div>
+      </div>
+      <div class="gf-card reveal reveal-delay-2">
+        <div class="gf-img gf-3">🏪</div>
+        <div class="gf-info">
+          <span class="gf-tag">Branding</span>
+          <h3>Señalización</h3>
+          <p>Identidad visual para tu local o negocio</p>
+        </div>
+      </div>
+      <div class="gf-card reveal reveal-delay-3">
+        <div class="gf-img gf-4">👕</div>
+        <div class="gf-info">
+          <span class="gf-tag">Textil</span>
+          <h3>DTF / Sublimación</h3>
+          <p>Transferencia full color para telas</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:32px;" class="reveal">
+      <button class="btn btn-blue" onclick="openWA()">COTIZAR PROYECTO GRANDE 🚀</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== GALERÍA ======================== -->
+<section class="section gallery-section" id="galeria">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Nuestro trabajo</p>
+    <h2 class="section-title reveal reveal-delay-1">LO QUE<br>HACEMOS</h2>
+    <div class="gallery-grid reveal reveal-delay-2">
+      <div class="gallery-item" onclick="openLightbox('💻')">
+        <div class="gallery-thumb gb-1">💻</div>
+        <div class="gallery-overlay">🔍</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('🎭')">
+        <div class="gallery-thumb tall gb-2">🎭</div>
+        <div class="gallery-overlay">🔍</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('🏍️')">
+        <div class="gallery-thumb gb-3">🏍️</div>
+        <div class="gallery-overlay">🔍</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('📱')">
+        <div class="gallery-thumb tall gb-4">📱</div>
+        <div class="gallery-overlay">🔍</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('🎒')">
+        <div class="gallery-thumb gb-5">🎒</div>
+        <div class="gallery-overlay">🔍</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('🖥️')">
+        <div class="gallery-thumb gb-6">🖥️</div>
+        <div class="gallery-overlay">🔍</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== SOCIAL PROOF ======================== -->
+<section class="section proof-section">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Hecho para marcas reales</p>
+    <h2 class="section-title reveal reveal-delay-1">MILES DE MARCAS<br>YA LO SABEN.</h2>
+    <div class="stats-row reveal reveal-delay-2">
+      <div class="stat-card">
+        <div class="stat-num">+500K</div>
+        <div class="stat-label">Stickers producidos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">+2.000</div>
+        <div class="stat-label">Clientes satisfechos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">+150</div>
+        <div class="stat-label">Diseños únicos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">🇨🇴</div>
+        <div class="stat-label">Envíos nacionales</div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="reviews-scroll reveal">
+      <div class="reviews-row">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Los stickers llegaron perfectos, la calidad del holográfico es increíble. Ya hice mi segundo pedido."</p>
+          <div class="review-author">@lauradesigns · Bogotá</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Pedí 500 stickers para mi marca y el servicio fue excelente. Precio, calidad y entrega top."</p>
+          <div class="review-author">@streetwear_medellin · Medellín</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Creative Store es mi imprenta de cabecera para todo. Los stickers 3D lenticular son una locura."</p>
+          <div class="review-author">@tattoo.col · Cali</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Rápidos, creativos y buenísima calidad. El equipo te ayuda con el diseño si lo necesitas."</p>
+          <div class="review-author">@brand.studio.co · Barranquilla</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FAQ ======================== -->
+<section class="section faq-section">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">Respuestas</p>
+    <h2 class="section-title reveal reveal-delay-1">PREGUNTAS<br>FRECUENTES</h2>
+    <div class="faq-list reveal reveal-delay-2">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Cuál es el pedido mínimo de stickers? <span class="faq-arrow">▾</span>
+        </button>
+        <div class="faq-a"><p>El mínimo es de 25 unidades para stickers personalizados. Para stickers al por mayor, el pedido mínimo es de 100 unidades. ¡Entre más pidas, mejor precio por unidad!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿En qué formatos aceptan el diseño? <span class="faq-arrow">▾</span>
+        </button>
+        <div class="faq-a"><p>Aceptamos JPG, PNG, PDF, AI, SVG y PSD. Para mejores resultados, recomendamos archivos vectoriales (AI o SVG) con al menos 300 DPI. Si no tienes el diseño, ¡podemos ayudarte a crearlo!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Cuánto tarda la producción y el envío? <span class="faq-arrow">▾</span>
+        </button>
+        <div class="faq-a"><p>La producción toma entre 3 y 7 días hábiles según el volumen. Los envíos a Bogotá llegan en 1–2 días, a otras ciudades entre 2–5 días. ¡También hacemos entregas express!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Los stickers son resistentes al agua y al sol? <span class="faq-arrow">▾</span>
+        </button>
+        <div class="faq-a"><p>Sí, todos nuestros stickers están fabricados en vinilo de alta calidad resistente al agua, humedad y rayos UV. Ideales para exteriores, botellas, cascos, etc.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Puedo pedir una muestra antes del pedido grande? <span class="faq-arrow">▾</span>
+        </button>
+        <div class="faq-a"><p>¡Claro! Puedes pedir una muestra de prueba antes de confirmar tu pedido al por mayor. Escríbenos por WhatsApp y te orientamos sobre cómo proceder.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CTA FINAL ======================== -->
+<section style="background:var(--blue);padding:80px 20px;text-align:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(45deg,rgba(255,255,255,0.03) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.03) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.03) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.03) 75%);background-size:28px 28px;background-position:0 0,0 14px,14px -14px,-14px 0;pointer-events:none;"></div>
+  <div style="position:relative;z-index:2;max-width:600px;margin:0 auto;" class="reveal">
+    <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--blue-pale);margin-bottom:12px;">¿Listo para crear?</p>
+    <h2 style="font-family:var(--font-display);font-weight:900;font-size:clamp(36px,8vw,64px);color:white;line-height:0.95;margin-bottom:20px;">TUS IDEAS<br>MERECEN<br>UN STICKER.</h2>
+    <p style="color:rgba(255,255,255,0.75);font-size:16px;margin-bottom:32px;">Empieza hoy. Sin mínimos imposibles, sin complicaciones.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-primary" style="font-size:16px;padding:16px 36px;" onclick="document.querySelector('#personaliza').scrollIntoView({behavior:'smooth'})">PERSONALIZAR AHORA 🎨</button>
+      <button class="btn btn-outline" onclick="openWA()">HABLAR CON NOSOTROS 💬</button>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer class="footer" id="contacto">
+  <!-- Mascota visible solo parcialmente en footer -->
+  <div class="footer-mascot">👦</div>
+  <div class="footer-grid">
+    <div>
+      <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:26px;color:white;letter-spacing:-1px;margin-bottom:12px;">
+        CREATIVE<span style="color:#9FC4F5">STORE</span>
+      </div>
+      <p class="footer-tagline">Stickers de calidad premium para personas y marcas que quieren destacar en Colombia y el mundo.</p>
+      <div class="footer-social">
+        <button class="social-btn" onclick="window.open('https://instagram.com')">📸</button>
+        <button class="social-btn" onclick="window.open('https://tiktok.com')">🎵</button>
+        <button class="social-btn" onclick="openWA()">💬</button>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Productos</h4>
+      <ul>
+        <li><a href="#categorias">Stickers Personalizados</a></li>
+        <li><a href="#categorias">Holográficos</a></li>
+        <li><a href="#categorias">Fotoluminicentes</a></li>
+        <li><a href="#categorias">3D Lenticular</a></li>
+        <li><a href="#mayorista">Al por mayor</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#gran-formato">Gran Formato</a></li>
+        <li><a href="#gran-formato">DTF / Textil</a></li>
+        <li><a href="#gran-formato">Vinilos</a></li>
+        <li><a href="#gran-formato">Señalización</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Ayuda</h4>
+      <ul>
+        <li><a href="#faq">Preguntas frecuentes</a></li>
+        <li><a href="#" onclick="openWA()">WhatsApp</a></li>
+        <li><a href="#">Política de envíos</a></li>
+        <li><a href="#">Términos y condiciones</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Creative Store — Estudio Creativo. Bogotá, Colombia. 🇨🇴</span>
+    <span>Hecho con 🩵 por <strong>OV8 Agency</strong></span>
+  </div>
+</footer>
+
+<!-- ======================== STICKY BOTTOM BAR (MOBILE) ======================== -->
+<div class="bottom-bar" id="bottom-bar">
+  <button class="btn bb-shop" onclick="document.querySelector('#categorias').scrollIntoView({behavior:'smooth'})">🛍 COMPRAR</button>
+  <button class="btn bb-wa" onclick="openWA()">💬 WHATSAPP</button>
+</div>
+
+<!-- WhatsApp float (Desktop) -->
+<div class="wa-float">
+  <button class="wa-float-btn" onclick="openWA()" aria-label="Contactar por WhatsApp">💬</button>
+</div>
+
+<!-- ======================== CART FLYOUT ======================== -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-flyout" id="cart-flyout">
+  <div class="cart-header">
+    <h3>Tu carrito 🛍</h3>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cart-body">
+    <div class="cart-empty" id="cart-empty">
+      <div class="empty-icon">👦</div>
+      <p><strong>Tu carrito está vacío.</strong><br>¡Agrega algún sticker y vuelve aquí!</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-num" id="cart-total-num">$0</span>
+    </div>
+    <button class="btn btn-blue" style="width:100%">FINALIZAR COMPRA 🚀</button>
+    <button class="btn btn-outline" style="width:100%;color:var(--dark);border-color:var(--gray);margin-top:8px;font-size:13px;" onclick="openWA()">¿Necesitas más? Escríbenos 💬</button>
+  </div>
+</div>
+
+<!-- ======================== JAVASCRIPT ======================== -->
+<script>
+/* --- NAV scroll behavior --- */
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+const bottomBar = document.getElementById('bottom-bar');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 60);
+  // Show bottom bar after hero
+  if (y > window.innerHeight * 0.6) {
+    bottomBar.classList.add('visible');
+  } else {
+    bottomBar.classList.remove('visible');
+  }
+  lastScroll = y;
+}, { passive: true });
+
+/* --- Menu toggle --- */
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('mobile-menu').classList.toggle('open', menuOpen);
+}
+function closeMenu() {
+  menuOpen = false;
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+
+/* --- Peel sticker effect --- */
+function peelSticker(el) {
+  el.classList.toggle('peeled');
+  setTimeout(() => el.classList.remove('peeled'), 1200);
+}
+
+/* --- Product peel on tap (mobile) --- */
+document.querySelectorAll('.product-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    if (e.target.classList.contains('product-add')) return;
+    this.classList.toggle('peeled');
+    setTimeout(() => this.classList.remove('peeled'), 1200);
+  });
+});
+
+/* --- Configurador: Acabado --- */
+function selectFinish(btn, label, cls) {
+  btn.closest('.option-pills').querySelectorAll('.option-pill').forEach(p => p.classList.remove('sel'));
+  btn.classList.add('sel');
+  const preview = document.getElementById('preview-sticker');
+  preview.className = 'preview-sticker' + (cls ? ' ' + cls : '');
+  const lbl = document.getElementById('preview-label');
+  lbl.textContent = label;
+}
+
+/* --- Configurador: opciones genéricas --- */
+function selectOption(btn, group) {
+  btn.closest('.option-pills').querySelectorAll('.option-pill').forEach(p => p.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function selectSize(btn, val) {
+  btn.closest('.size-buttons').querySelectorAll('.size-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  const scale = { '3×3': 0.7, '5×5': 0.85, '7×7': 1, '10×10': 1.2, 'custom': 1 };
+  document.getElementById('preview-sticker').style.transform = `scale(${scale[val] || 1})`;
+}
+
+/* --- Steps track --- */
+document.querySelectorAll('.step-pill').forEach(pill => {
+  pill.addEventListener('click', function() {
+    document.querySelectorAll('.step-pill').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+/* --- Upload preview --- */
+function handleUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    document.getElementById('preview-emoji').textContent = '🎨';
+    document.getElementById('preview-sticker').style.backgroundImage = `url(${ev.target.result})`;
+    document.getElementById('preview-sticker').style.backgroundSize = 'cover';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* --- Mayorista --- */
+const STICKER_EMOJIS = ['✨','⭐','🌈','💥','🔥','🎭','🌟','🎯','💎','🦋','🌸','⚡'];
+function getStickers(emojis, count) {
+  return Array.from({length: count}, (_, i) =>
+    `<span class="ws-sticker" style="animation-delay:${i*0.05}s">${emojis[i % emojis.length]}</span>`
+  ).join('');
+}
+function updateWholesale(qty, price, time) {
+  const basePrice = 600;
+  const total = qty * price;
+  const saving = qty * (basePrice - price);
+  document.getElementById('ws-unit').textContent = '$' + price.toLocaleString('es-CO');
+  document.getElementById('ws-total').textContent = '$' + total.toLocaleString('es-CO');
+  document.getElementById('ws-saving').textContent = saving > 0 ? '$' + saving.toLocaleString('es-CO') : '—';
+  document.getElementById('ws-time').textContent = time;
+
+  // Visual stickers
+  const count = Math.min(Math.round(qty / 100) * 2, 60);
+  const field = document.getElementById('sticker-field');
+  field.innerHTML = getStickers(STICKER_EMOJIS, count);
+}
+function selectQty(btn) {
+  document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateWholesale(+btn.dataset.qty, +btn.dataset.price, btn.dataset.time);
+}
+// Init
+updateWholesale(100, 450, '3–5 días');
+
+/* --- Cart --- */
+let cartItems = [];
+let cartTotal = 0;
+
+function addToCart(name, price, emoji, event) {
+  event.stopPropagation();
+  cartItems.push({ name, price, emoji });
+  cartTotal += price;
+  renderCart();
+  // Flying sticker animation
+  flyToCart(event, emoji);
+  // Bounce badge
+  const badge = document.getElementById('cart-badge');
+  badge.textContent = cartItems.length;
+  badge.classList.add('visible');
+  badge.animate([{transform:'scale(1.6)'},{transform:'scale(1)'}], {duration:300});
+}
+function flyToCart(event, emoji) {
+  const cartBtn = document.getElementById('cart-btn');
+  const cartRect = cartBtn.getBoundingClientRect();
+  const fly = document.createElement('div');
+  fly.className = 'flying-sticker';
+  fly.textContent = emoji;
+  fly.style.left = (event.clientX - 20) + 'px';
+  fly.style.top = (event.clientY - 20) + 'px';
+  document.body.appendChild(fly);
+  fly.animate([
+    { transform: 'scale(1)', opacity: 1, left: fly.style.left, top: fly.style.top },
+    { transform: 'scale(0.3)', opacity: 0, left: cartRect.left + 'px', top: cartRect.top + 'px' }
+  ], { duration: 550, easing: 'cubic-bezier(0.4,0,0.2,1)', fill: 'forwards' })
+  .onfinish = () => fly.remove();
+}
+function renderCart() {
+  const body = document.getElementById('cart-body');
+  const empty = document.getElementById('cart-empty');
+  const footer = document.getElementById('cart-footer');
+  if (cartItems.length === 0) {
+    empty.style.display = '';
+    footer.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  footer.style.display = '';
+  document.getElementById('cart-total-num').textContent = '$' + cartTotal.toLocaleString('es-CO');
+  const itemsHTML = cartItems.map((item, i) => `
+    <div class="cart-item">
+      <div class="cart-item-thumb">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">$${item.price.toLocaleString('es-CO')}</div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${i})">✕</button>
+    </div>
+  `).join('');
+  body.innerHTML = itemsHTML;
+}
+function removeFromCart(i) {
+  cartTotal -= cartItems[i].price;
+  cartItems.splice(i, 1);
+  renderCart();
+  const badge = document.getElementById('cart-badge');
+  if (cartItems.length === 0) badge.classList.remove('visible');
+  else badge.textContent = cartItems.length;
+}
+function openCart() {
+  document.getElementById('cart-flyout').classList.add('open');
+  document.getElementById('cart-overlay').classList.add('show');
+}
+function closeCart() {
+  document.getElementById('cart-flyout').classList.remove('open');
+  document.getElementById('cart-overlay').classList.remove('show');
+}
+
+/* --- FAQ --- */
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+/* --- Gallery lightbox placeholder --- */
+function openLightbox(emoji) {
+  alert(`Aquí iría el lightbox con: ${emoji}\n(En producción: usar GLightbox o Fancybox)`);
+}
+
+/* --- WhatsApp --- */
+function openWA() {
+  window.open('https://wa.me/573001234567?text=Hola%20Creative%20Store!%20Me%20interesa%20hacer%20un%20pedido%20de%20stickers.', '_blank');
+}
+
+/* --- Category filter placeholder --- */
+function filterProducts(cat) {
+  console.log('Filter:', cat);
+  document.querySelector('#products-section, .products-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* --- Scroll reveal --- */
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
